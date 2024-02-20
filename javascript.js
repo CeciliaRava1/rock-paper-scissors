@@ -1,3 +1,6 @@
+rock.addEventListener("click", rockFunction);
+
+
 /*  > Understand the problem
       - rock > scissors > paper > rock
       -  2   >    1     >   0   <   2
@@ -16,7 +19,7 @@
    > Execute a round of the game rock-paper-scissors
     - Declare the function 'playSingleRound'
         - Arguments: 'computerSelection' and 'playerSelection'
-*/
+
 
 //  Declare the function 'getComputerChoice'
 let computerSelection;
@@ -77,3 +80,5 @@ function playSingleRound(playerSelection, computerSelection) {
 
 // Execute a round of the game rock-paper-scissors
 console.log(playSingleRound(playerSelection, computerSelection));
+
+*/

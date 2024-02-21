@@ -1,84 +1,89 @@
-rock.addEventListener("click", rockFunction);
+// Score board
+let userScore = 0;
+let compScore = 0;
+
+//DOM variables. To control this elements by Js
+const userScore_span = document.getElementById('user-score');
+const compScore_span = document.getElementById('comp-score');
+const scoreBoard_div = document.querySelector('.score-board');
+const result_p = document.querySelector('.result > p');
+const rock_div = document.getElementById('rock');
+const paper_div = document.getElementById('paper');
+const scissors_div = document.getElementById('scissors');
 
 
-/*  > Understand the problem
-      - rock > scissors > paper > rock
-      -  2   >    1     >   0   <   2
-
-    > Obtain computer selection
-    - Declare the function 'getComputerChoice'
-        - 0 arguments. 
-        - Declare the var 'computerSelection'
-        - Use math.floor(math.random() * 3) to obtain random numbers between 0 and 2.
-    - Execute the function 'getComputerChoice'
-
-   > Obtain player selection
-    - Declare the var 'playerSelection'
-    - Ask user for a value between 0 and 2, correspondent to 'rock', 'paper' or 'scissors'
- 
-   > Execute a round of the game rock-paper-scissors
-    - Declare the function 'playSingleRound'
-        - Arguments: 'computerSelection' and 'playerSelection'
-
-
-//  Declare the function 'getComputerChoice'
-let computerSelection;
-function getComputerChoice(){
-    computerSelection = Math.floor(Math.random() * 3);
+//Obtain computer choice to give it to the 'game' function
+function getCompChoice(){
+    const choices = ['rock', 'paper', 'scissors'];
+    const randomNumber = (Math.floor(Math.random() * 3));
+    return choices[randomNumber];
 }
 
-// Obtain player selection
-let correctValue = false;
-let playerSelection;
-while (correctValue !== true){
-    playerSelection = prompt('Choice a number: 0.rock, 1.paper, 2.scissors', "")
-    playerSelection = parseInt(playerSelection);
+//Functions to define what to do with the game result
+function win(userChoice, compChoice) {
+    const userChoice_div = document.getElementById(userChoice);
+    userScore++;
+    userScore_span.innerHTML = userScore;
+    compScore_span.innerHTML = compScore;
+    result_p.innerHTML = `${userChoice.charAt(0).toUpperCase()}${userChoice.slice(1)} beats ${compChoice}. You win! 😄`;
+    userChoice_div.classList.add('green-glow');
+    setTimeout(function() {userChoice_div.classList.remove('green-glow')}, 400);
+}
 
-    if(playerSelection >= 0 && playerSelection <=2){
-        correctValue = true;
+function lose(userChoice, compChoice){
+    const userChoice_div = document.getElementById(userChoice);
+    compScore++;
+    userScore_span.innerHTML = userScore;
+    compScore_span.innerHTML = compScore;
+    result_p.innerHTML = `${userChoice.charAt(0).toUpperCase()}${userChoice.slice(1)} loses to ${compChoice}. You lost 😪 `;
+    userChoice_div.classList.add('red-glow');
+    setTimeout(function() {userChoice_div.classList.remove('red-glow')}, 400);
+}
+
+
+function draw(userChoice, compChoice){
+    const userChoice_div = document.getElementById(userChoice);
+    userScore_span.innerHTML = userScore;
+    compScore_span.innerHTML = compScore;
+    result_p.innerHTML = `${userChoice.charAt(0).toUpperCase()}${userChoice.slice(1)} equals ${compChoice}. It's a draw 😴`;
+    userChoice_div.classList.add('gray-glow');
+    setTimeout(function() {userChoice_div.classList.remove('gray-glow')}, 400);
+}
+
+
+//Control what happen's when user pushes an option button
+function game(userChoice){
+    const compChoice = getCompChoice();
+    switch (userChoice + compChoice){
+        case 'rockscissors':
+        case 'paperrock':
+        case 'scissorspaper':
+            win(userChoice, compChoice);
+            break;
+
+        case 'scissorsrock':
+        case 'rockpaper':
+        case 'paperrock':
+            lose(userChoice, compChoice);
+            break;
+
+        case 'rockrock':
+        case 'paperpaper':
+        case ' scissorsscissors':
+            draw(userChoice, compChoice);
+            break;
     }
 }
 
-// Obtain computer selection
-getComputerChoice();
-
-// Declare a function to convert option number to string
-function convertNumberToChar(number){
-    switch(number){
-        case 0:
-            number = 'rock';
-            break;
-        case 1:
-            number = 'paper';
-            break;
-        case 2:
-            number = 'scissors';
-            break;
-    }
-    return number;
+function main() {
+    rock_div.addEventListener('click', function() {
+        game('rock');
+    })
+    paper_div.addEventListener('click', function() {
+        game('paper');
+    })
+    scissors_div.addEventListener('click', function() {
+        game('scissors');
+    })
 }
-
-// Obtain string
-console.log('You: ' + convertNumberToChar(playerSelection));
-console.log('Computer: ' + convertNumberToChar(computerSelection));
-
-
-// Declare the function 'playSingleRound'
-function playSingleRound(playerSelection, computerSelection) {
-    if (playerSelection == 0 && computerSelection == 2 || playerSelection == 2 && computerSelection == 1) {
-        return 'You win!';
-    } else if(playerSelection == computerSelection){
-        return 'You tied with the computer!';
-    } else if(playerSelection == 2 && computerSelection == 0){
-        return 'You lose!';
-    } else if( playerSelection > computerSelection){
-       return 'You win!';
-    } else {
-        return 'You lose!';
-    }
-}
-
-// Execute a round of the game rock-paper-scissors
-console.log(playSingleRound(playerSelection, computerSelection));
-
-*/
+main();
